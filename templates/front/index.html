@@ -1,0 +1,90 @@
+{% extends 'front/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="wrapper">
+  <div class="main">
+  <div class="section section-white">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-6 ml-auto mr-auto text-center title">
+            <h2>List Terbaru Artikel</h2>
+            <h3 class="title-uppercase">
+            </h3>
+        </div>
+        <hr>
+        </div>
+        <div class="article">
+          <div class="row">
+            <div class="col-md-8">
+              {% for a in artikel %}
+              <div class="card card-blog card-plain text-center" style="padding-top: 15px;">
+                <div class="card-image">
+                   <img class="img img-raised" src="{{a.ImgUrl}}">
+                </div>
+                <div class="card-body">
+                  <h3 class="card-title">
+                    <a class="text-danger" href="{% url 'detail_artikel' a.id %}">{{a.judul}}</a>
+                  </h3>
+          
+                  <div class="card-description">
+                    <p style="color: brown;"><span class="badge badge-primary main-tag">{{a.kategory}}</span> - {{a.date}} </p>
+                  </div>
+                </div>
+              </div>
+              <hr>
+              {% endfor %}
+            </div>
+            <div class="col-md-2">
+              <div class="card card-blog card-plain">
+                <h3>Kategori :</h3>
+        
+                <div class="card-body">
+                  {% for k in kategori  %}
+                  <div class="card-category">
+                    <span class="badge badge-primary main-tag">
+                      <a href="{% url 'artikel_filter' k.nama %}" style="color: white;">{{k.nama}}</a>
+                    </span>
+                  </div>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr><br /><br />
+        <hr />
+        <div class="row">
+          <div class="col-md-12">
+           
+            <div class="pull-right">
+              {% if artikel.has_other_pages %}
+             <ul class="pagination">
+               {% if artikel.has_previous %}
+                <li><a href="?page={{ artikel.previous_page_number }}">&laquo;</a></li>
+               {% else %}
+                 <li class="disabled"><span>&laquo;</span></li>
+               {% endif %}
+               {% for i in artikel.paginator.page_range %}
+                 {% if artikel.number == i %}
+                   <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                 {% else %}
+                   <li><a href="?page={{ i }}">{{ i }}</a></li>
+                 {% endif %}
+               {% endfor %}
+               {% if artikel.has_next %}
+                 <li><a href="?page={{ artikel.next_page_number }}">&raquo;</a></li>
+               {% else %}
+                 <li class="disabled"><span>&raquo;</span></li>
+               {% endif %}
+             </ul>
+           {% endif %}
+            </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}
